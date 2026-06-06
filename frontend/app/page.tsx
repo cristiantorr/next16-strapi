@@ -1,17 +1,25 @@
-import { getStrapiData } from "@/lib/strapi";
+import { getHomePage } from "@/lib/strapi";
+import { HeroSection } from "@/components/hero-section";
+
+export async function generateMetadata() {
+  const strapiData = await getHomePage(); // 1.
+  return {
+    title: strapiData?.title,
+    description: strapiData?.description,
+  };
+}
 
 export default async function Home() {
-  const strapiData = await getStrapiData("/api/home-page"); // Replace with your actual endpoint
-  const { title, description } = strapiData.data || {};
-  console.log(strapiData); // Debugging log
+  const strapiData = await getHomePage(); // 2.
+
+  console.log(strapiData);
+
+  const { title, description } = strapiData;
+  const [heroSection] = strapiData?.sections || [];
+
   return (
-    <main className="flex flex-col items-center justify-between p-24">
-      <h1 className="text-4xl font-bold">{title || "Loading..."}</h1>
-      <p className="mt-4 text-lg">
-        {description || "Please wait while we fetch the new data."}
-      </p>
-      <hr />
-      <hr />
+    <main className="container mx-auto py-6">
+      <HeroSection data={heroSection} />
     </main>
   );
 }
