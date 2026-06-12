@@ -23,7 +23,7 @@ const QUERY_HOME_PAGE = {
 };
 
 export async function getHomePage() {
-  "use cache";
+  "use cache"; // 1. Cache the result of this function for 10 minutes
 
   const query = qs.stringify(QUERY_HOME_PAGE);
   const response = await getStrapiData(`/api/home-page?${query}`);
